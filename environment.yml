@@ -1,0 +1,11 @@
+# conda env create -f environment.yml
+# Python packages pinned to the environment the analysis was run in (2026-11).
+# ANTs 2.5.4, MATLAB R2025a and SPM12 (r7771) are installed separately; see README.md.
+name: glysrc7t
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip
+  - pip:
+      - -r requirements.txt

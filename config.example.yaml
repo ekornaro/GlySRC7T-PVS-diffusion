@@ -1,0 +1,44 @@
+# Site-specific paths for the GlySRC7T PVS diffusion pipeline.
+# Copy to config.yaml (not tracked by git) and edit. Flat YAML: one `key: value`
+# per line; ${key} refers to another key; relative paths are relative to this
+# file's folder. Analysis parameters are NOT set here -- they stay in the scripts.
+
+# Convenience root that the entries below are built from.
+project_dir: /path/to/GlySRC7T
+
+# --- inputs -------------------------------------------------------------------
+# EvgBrainPipe output, one folder per participant:
+#   sub-XXX/pipeline_output/DATASINK/DKISpace/{dwi_proc,dki,masks,...}
+data_root: ${project_dir}/data/EvgBrainPipe
+# Parent of the PVS segmentation trees (step22 iterates over Lund_7T_<case>)
+pvs_segmentations_dir: ${project_dir}/data/PVS_segmentations
+# T1w-space tree: sub-XXX/{PVS,Segmentation,DKI_in_T1w_space}/ (the PVS root)
+pvs_root: ${pvs_segmentations_dir}/Lund_7T_conservative/Rob_bfc/using_FLAIR
+# Study spreadsheet: sheets HC, PPCS, Boxers; inclusion column "Will we used it?"
+# (contains participant information -- never commit it)
+study_xlsx: ${project_dir}/study_info/study_spreadsheet.xlsx
+# SynthSeg label lookup table (sheet "Labels"), used by step22
+synthseg_labels_xlsx: ${project_dir}/study_info/synthseg_labels_short_leftright_combined.xlsx
+# Tree with sub-XXX/FreeSurfer/synthseg/volumetry_scores.csv for the eTIV comparison
+# (step21c): recon-all eTIV assembled by hand, not SynthSeg output despite the name
+freesurfer_root: ${pvs_root}
+# Parasagittal dural (PSD) space volumes from SPESIS (step24)
+psd_csv: ${project_dir}/data/PSD/FLAIR_output_gathered_no-prefrontal.csv
+
+# --- external software -----------------------------------------------------------
+spm12_dir: /path/to/spm12
+# Free-water DKI library loaded by step20 (the copy in this repository)
+fwdki_py: fwdki.py
+
+# --- intermediate results and outputs --------------------------------------------
+# SPM12 TIV: CSV written by step21a/b; the per-group workbook (sheets HC, PPCS,
+# Boxers, column TIV_ml) read by step21c and step22
+tiv_spm12_csv: ${project_dir}/data/TIV_spm12_results.csv
+tiv_spm12_xlsx: ${project_dir}/data/TIV_spm12_results.xlsx
+# Folder of the tier workbooks: step16 writes pvs_tier_metrics_v9.xlsx here, and
+# steps 17-20 and 25 are run from it (registration_confounds_*, MixedEffects_*)
+workbooks_dir: ${project_dir}/workbooks
+# Root of the per-participant spreadsheets (step22) and group statistics (step23, step25)
+results_dir: ${project_dir}/results/with_the_median
+# Output folder of the tier figures (step19)
+tier_figures_dir: ${results_dir}/tier_figures
